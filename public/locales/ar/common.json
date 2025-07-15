@@ -1,0 +1,6 @@
+{
+  "title": "Mi aplicación Next.js",
+  "description": "Generado por create next app",
+  "welcome": "¡Bienvenido a nuestra aplicación!",
+  "greeting": "¡Hola, {{name}}!"
+}
