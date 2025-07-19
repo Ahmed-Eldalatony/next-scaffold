@@ -1,46 +1,39 @@
 {
-  "Error": {
-    "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",
-    "title": "Something went wrong!"
-  },
-  "IndexPage": {
-    "description": "This is a basic example that demonstrates the usage of <code>next-intl</code> with the Next.js App Router. Try changing the locale in the top right corner and see how the content changes.",
-    "title": "next-intl example"
+  "Index": {
+    "title": "الصفحة الرئيسية",
+    "loggedIn": "تم تسجيل الدخول باسم {username}",
+    "loggedOut": "لقد تم تسجيل خروجك.",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "secret": "صفحة سرية للمستخدمين المسجلين"
   },
   "LocaleLayout": {
-    "title": "next-intl example"
+    "title": "مثال next-intl مع Auth.js",
+    "home": "الرئيسية",
+    "posts": "المنشورات",
+    "createPost": "إنشاء منشور"
+  },
+  "Login": {
+    "title": "تسجيل الدخول",
+    "username": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "submit": "تسجيل الدخول",
+    "error": "{error, select, CredentialsSignin {اسم مستخدم أو كلمة مرور غير صالحة} other {خطأ غير معروف}}"
   },
   "LocaleSwitcher": {
-    "label": "Change language",
-    "locale": "{locale, select, ar {Ar} en {En} other {Unknown}}"
+    "switchLocale": "التبديل إلى {locale, select, ar {العربية} en {الإنجليزية} other {غير معروف}}"
   },
-  "Manifest": {
-    "name": "next-intl example"
+  "Secret": {
+    "title": "صفحة سرية",
+    "description": "هذه الصفحة مرئية فقط للمستخدمين المسجلين."
   },
-  "Navigation": {
-    "home": "Home",
-    "pathnames": "Pathnames"
-  },
-  "NotFoundPage": {
-    "description": "Please double-check the browser address bar or use the navigation to go to a known page.",
-    "title": "Page not found"
-  },
-  "PageLayout": {
-    "links": {
-      "docs": {
-        "description": "Learn more about next-intl in the official docs.",
-        "href": "https://next-intl.dev",
-        "title": "Docs"
-      },
-      "source": {
-        "description": "Browse the source code of this example on GitHub.",
-        "href": "https://github.com/amannn/next-intl/tree/main/examples/example-app-router",
-        "title": "Source code"
-      }
-    }
-  },
-  "PathnamesPage": {
-    "description": "<p>The pathnames are internationalized too.</p><p>If you're using the default language English, you'll see <code>/en/pathnames</code> in the browser address bar on this page.</p><p>If you change the locale to German, the URL is localized accordingly (<code>/de/pfadnamen</code>).</p>",
-    "title": "Pathnames"
+  "CreatePostPage": {
+    "title": "إنشاء منشور جديد",
+    "titlePlaceholder": "عنوان المنشور",
+    "contentPlaceholder": "محتوى المنشور",
+    "createButton": "إنشاء منشور",
+    "creating": "جارٍ الإنشاء...",
+    "successMessage": "تم إنشاء المنشور بنجاح!",
+    "failureMessage": "فشل في إنشاء المنشور."
   }
 }

@@ -1,53 +1,43 @@
 import { notFound } from 'next/navigation';
-import { Locale, hasLocale, NextIntlClientProvider } from 'next-intl';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { QueryProviders } from '@/providers/reactQuery';
+import { Locale, NextIntlClientProvider, hasLocale } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import Header from '@/components/common/Header';
+import "../globals.css"
 import { ReactNode } from 'react';
-import { clsx } from 'clsx';
-import { Inter } from 'next/font/google';
 import { routing } from '@/i18n/routing';
-import '../globals.css'
-import LocaleSwitcher from '@/components/common/LocalSwitcher';
 
+import { getUser } from '@/data/user/getUser';
 type Props = {
   children: ReactNode;
   params: Promise<{ locale: Locale }>;
 };
 
-const inter = Inter({ subsets: ['latin'] });
-
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
-
-export async function generateMetadata(props: Omit<Props, 'children'>) {
-  const { locale } = await props.params;
-
-  const t = await getTranslations({ locale, namespace: 'LocaleLayout' });
-
-  return {
-    title: t('title')
-  };
-}
-
 export default async function LocaleLayout({ children, params }: Props) {
-  // Ensure that the incoming `locale` is valid
+  // const user = await getUser().then(res => res.users);
+
+
+
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
-  setRequestLocale(locale);
+  const messages = await getMessages();
 
   return (
-    <html className="h-full" lang={locale}>
-      <body className={clsx(inter.className, 'flex h-full flex-col')}>
-        <NextIntlClientProvider>
-          <header>
-            <LocaleSwitcher />
-          </header>
-          {children}
+    <html lang={locale}>
+      {/* <head> */}
+      {/*   <title>next-intl & next-auth</title> */}
+      {/* </head> */}
+      <body>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <QueryProviders>
+            <Header />
+            {children}
+          </QueryProviders>
         </NextIntlClientProvider>
       </body>
-    </html>
+    </html >
   );
 }
