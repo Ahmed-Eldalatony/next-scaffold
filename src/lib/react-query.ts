@@ -1,4 +1,3 @@
-// lib/react-query.ts
 'use client'
 import { QueryClient } from '@tanstack/react-query'
 import { isServer } from '@tanstack/react-query'

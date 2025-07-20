@@ -1,16 +1,18 @@
 import { getTranslations } from "next-intl/server";
 
-import { prisma } from '@/lib/prisma';
+
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale, namespace: 'PostsPage' });
+  return {
+    title: t('title'),
+  };
+}
 
 export default async function PostsPage() {
 
   const t = await getTranslations('PostsPage');
 
-  const posts = await prisma.post.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+
 
   return (
     <div className="container mx-auto py-8">

@@ -8,7 +8,6 @@ import { routing } from '@/i18n/routing';
 //   '/',
 //   '/login',
 //   '/posts',
-//   '/create-post',
 //   '/credentials-login',
 // ];
 //
