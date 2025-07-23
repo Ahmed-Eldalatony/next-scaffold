@@ -1,10 +1,17 @@
 
-import { AuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "./prisma";
+import type {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next"
+import type { NextAuthOptions } from "next-auth"
+import { getServerSession } from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@auth/prisma-adapter"
+import { prisma } from "./prisma"
 
-export const auth: AuthOptions = {
+// ✅ Export config using satisfies NextAuthOptions
+export const config = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -13,41 +20,28 @@ export const auth: AuthOptions = {
         params: {
           prompt: "consent",
           access_type: "offline",
-          response_type: "code"
-        }
-      }
-    })
+          response_type: "code",
+        },
+      },
+    }),
   ],
   adapter: PrismaAdapter(prisma),
-  // session: {
-  //   strategy: 'jwt',
-  // },
-  // jwt: {
-  //   secret: process.env.NEXTAUTH_SECRET,
-  // },
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-
-      if (token && session.user) {
-        session.user.id = token.id as string;
-
-        console.log("FROM SESSION==", token, session);
-      }
-      return session;
-    },
     async redirect({ url, baseUrl }) {
-      return `${baseUrl}/`;
+      return `${baseUrl}/`
     },
   },
-};
+} satisfies NextAuthOptions
 
-export default auth;
+// ✅ Export helper for use in server components or API routes
+export function auth(
+  ...args:
+    | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
+    | [NextApiRequest, NextApiResponse]
+    | []
+) {
+  return getServerSession(...args, config)
+}

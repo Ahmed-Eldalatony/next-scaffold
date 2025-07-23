@@ -35,7 +35,9 @@
       "Notes/",
       "wrangler.jsonc",
       "public/",
-      "src/components/ui/",
+      "src/components/ui",
+      "src/components/smart-form.tsx",
+"src/components/strength-meter.tsx",
       "src/app/globals.css",
       "package.json",
       "repomix.config.json"
