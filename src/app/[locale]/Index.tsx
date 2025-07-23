@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { Session } from 'next-auth';
-import { signOut } from 'next-auth/react';
 import { useLocale, useTranslations } from 'next-intl';
+import { useSession, signOut } from "next-auth/react"
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -11,7 +11,10 @@ type Props = {
   session: Session | null;
 };
 
-export default function Index({ session }: Props) {
+export default function Index() {
+  const { data: session, status } = useSession()
+  if (status === "loading") return null
+
   const t = useTranslations('Index');
   const locale = useLocale();
 

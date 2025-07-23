@@ -1,13 +1,16 @@
 import { notFound } from 'next/navigation';
+import { SessionProviderClient } from '@/providers/sessionProvider';
 import { QueryProviders } from '@/providers/reactQuery';
+
 import { Locale, NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import Header from '@/components/common/Header';
 import "../globals.css"
 import { ReactNode } from 'react';
+import { Toaster } from "@/components/ui/sonner"
 import { routing } from '@/i18n/routing';
 
-import { getUser } from '@/data/user/getUser';
+import { auth } from '@/lib/auth';
 type Props = {
   children: ReactNode;
   params: Promise<{ locale: Locale }>;
@@ -15,7 +18,7 @@ type Props = {
 
 export default async function LocaleLayout({ children, params }: Props) {
   // const user = await getUser().then(res => res.users);
-
+  const session = await auth()
 
 
   const { locale } = await params;
@@ -27,17 +30,21 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale}>
-      {/* <head> */}
-      {/*   <title>next-intl & next-auth</title> */}
-      {/* </head> */}
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <QueryProviders>
-            <Header />
-            {children}
+            <SessionProviderClient session={session}>
+              <Header />
+              {children}
+              {/**/}
+            </SessionProviderClient >
+            <Toaster />
           </QueryProviders>
         </NextIntlClientProvider>
       </body>
     </html >
   );
 }
+
+
+
