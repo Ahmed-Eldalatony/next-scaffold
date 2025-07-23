@@ -29,19 +29,33 @@
   },
 
   "PostsPage":{
-    "title":"posts",
-    "noPosts":"no posts"
+    "title":"Posts",
+    "noPosts":"no posts",
+
+  "titlePlaceholder": "Enter post title",
+"createTitle": "Create a New Post",
+    "postsTitle": "All Posts",
+  "contentPlaceholder": "Write your content here...",
+  "createButton": "Create Post",
+  "creating": "Creating...",
+  "createSuccess": "Post created successfully!",
+  "createError": "Failed to create post.",
+  "postsList": "All Posts",
+  "loadingPosts": "Loading posts"
   },
   "CreatePostPage": {
-    "title": "Create New Post",
-    "titlePlaceholder": "Post Title",
-    "contentPlaceholder": "Post Content",
-    "createButton": "Create Post",
-    "creating": "Creating...",
-    "successMessage": "Post created successfully!",
-    "failureMessage": "Failed to create post."
-  }
-
-
+  "title": "Create a New Post",
+  "titlePlaceholder": "Enter post title",
+"createTitle": "Create a New Post",
+    "postsTitle": "All Posts",
+  "contentPlaceholder": "Write your content here...",
+  "createButton": "Create Post",
+  "creating": "Creating...",
+  "createSuccess": "Post created successfully!",
+  "createError": "Failed to create post.",
+  "postsList": "All Posts",
+  "loadingPosts": "Loading posts",
+  "noPosts": "No posts yet."
+}
 
 }
