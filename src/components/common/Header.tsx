@@ -3,8 +3,8 @@
 import { useTranslations } from "next-intl";
 import LocaleSwitcher from "./i8n/LocalSwitcher";
 import Link from "next/link";
-import { usePathname } from "@/i18n/navigation"; // Use next-intl's usePathname for correct locale handling
-import { useSession, signOut } from "next-auth/react"; // Import session hooks
+import { usePathname } from "@/i18n/navigation";
+import { useSession, signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,15 +12,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"; // Assuming shadcn/ui DropdownMenu
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; // Assuming shadcn/ui Avatar
-import { Button } from "@/components/ui/button"; // Assuming shadcn/ui Button
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from "@/components/ui/dialog"; // Assuming shadcn/ui Dialog for mobile menu
-import { Menu, LogOut, Home, FileText, PlusCircle } from "lucide-react"; // Icons from lucide-react
+} from "@/components/ui/dialog";
+import { Menu, LogOut, Home, FileText } from "lucide-react";
 import { useState } from "react";
 
 
@@ -28,19 +28,14 @@ export default function Header() {
   const { data: session } = useSession();
   const t = useTranslations("LocaleLayout");
   const pathname = usePathname();
-  // const { data: session } = useSession(); // Get session data
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // State for mobile menu
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Helper function to check if a link is active
   const isActive = (path: string) => {
-    // Basic check, might need refinement for nested routes or prefixes
-    // This assumes paths like '/en/posts' or '/ar/posts'
     const segments = pathname.split('/').filter(Boolean);
     const currentPathSegment = segments.length > 1 ? `/${segments[1]}` : `/${segments[0]}`; // Get the main segment
     return currentPathSegment === path;
   };
 
-  // Function to handle logout
   const handleLogout = async () => {
     await signOut({ callbackUrl: '/' }); // Redirect to home after logout
   };
@@ -101,7 +96,7 @@ export default function Header() {
                   </DropdownMenuItem> */}
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>{t('logout')}</span>
+                    <span>{t("logout")}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

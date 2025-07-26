@@ -1,13 +1,19 @@
-// src/app/api/(posts)/get-posts/route.ts
 import { prisma } from '@/lib/prisma';
+import { config } from '@/lib/auth';
 import { NextResponse } from 'next/server';
+import { getServerSession } from "next-auth/next"
 
-// Define default and max limits
+
 const DEFAULT_LIMIT = 5;
 const MAX_LIMIT = 100;
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export async function GET(req: Request, res: NextResponse) {
+  const session = await getServerSession(config)
+  if (!session?.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const { searchParams } = new URL(req.url);
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
 
@@ -27,11 +33,11 @@ export async function GET(request: Request) {
   try {
     const [posts, totalCount] = await Promise.all([
       prisma.post.findMany({
-        orderBy: { createdAt: 'desc' }, // Ensure consistent ordering
+        orderBy: { createdAt: 'desc' },
         take: limit,
         skip: skip,
       }),
-      prisma.post.count(), // Get total count for hasNextPage calculation
+      prisma.post.count(),
     ]);
 
     const hasNextPage = skip + posts.length < totalCount;

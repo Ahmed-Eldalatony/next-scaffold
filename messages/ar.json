@@ -1,39 +1,61 @@
 {
   "Index": {
     "title": "الصفحة الرئيسية",
-    "loggedIn": "تم تسجيل الدخول باسم {username}",
-    "loggedOut": "لقد تم تسجيل خروجك.",
+    "loggedIn": "تم تسجيل الدخول كـ {username}",
+    "loggedOut": "تم تسجيل الخروج.",
     "login": "تسجيل الدخول",
     "logout": "تسجيل الخروج",
     "secret": "صفحة سرية للمستخدمين المسجلين"
   },
   "LocaleLayout": {
-    "title": "مثال next-intl مع Auth.js",
+    "title": "Next Scaffold",
     "home": "الرئيسية",
     "posts": "المنشورات",
-    "createPost": "إنشاء منشور"
+    "logout": "تسجيل الخروج",
+    "login": "تسجيل الدخول"
   },
   "Login": {
     "title": "تسجيل الدخول",
     "username": "اسم المستخدم",
     "password": "كلمة المرور",
     "submit": "تسجيل الدخول",
-    "error": "{error, select, CredentialsSignin {اسم مستخدم أو كلمة مرور غير صالحة} other {خطأ غير معروف}}"
+    "error": "{error, select, CredentialsSignin {اسم المستخدم أو كلمة المرور غير صحيحة} other {خطأ غير معروف}}",
+    "signInWithGoogle": "تسجيل الدخول باستخدام جوجل"
   },
   "LocaleSwitcher": {
     "switchLocale": "التبديل إلى {locale, select, ar {العربية} en {الإنجليزية} other {غير معروف}}"
   },
-  "Secret": {
-    "title": "صفحة سرية",
-    "description": "هذه الصفحة مرئية فقط للمستخدمين المسجلين."
+  "PostsPage": {
+    "title": "جميع المنشورات",
+    "noPosts": "لا توجد منشورات حتى الآن.",
+    "loadMore": "تحميل المزيد",
+    "goToPage": "اذهب إلى الصفحة {page}",
+    "previous": "السابق",
+    "next": "التالي",
+    "pageInfo": "الصفحة {current} من {total}",
+    "titlePlaceholder": "أدخل عنوان المنشور",
+    "createTitle": "إنشاء منشور جديد",
+    "contentPlaceholder": "اكتب المحتوى هنا...",
+    "createButton": "إنشاء منشور",
+    "creating": "جارٍ الإنشاء...",
+    "createSuccess": "تم إنشاء المنشور بنجاح!",
+    "createError": "فشل في إنشاء المنشور.",
+    "loadError": "فشل في تحميل المنشورات",
+    "postsList": "جميع المنشورات",
+    "loadingPosts": "جارٍ تحميل المنشورات"
   },
   "CreatePostPage": {
     "title": "إنشاء منشور جديد",
-    "titlePlaceholder": "عنوان المنشور",
-    "contentPlaceholder": "محتوى المنشور",
+    "titlePlaceholder": "أدخل عنوان المنشور",
+    "createTitle": "إنشاء منشور جديد",
+    "postsTitle": "جميع المنشورات",
+    "contentPlaceholder": "اكتب المحتوى هنا...",
     "createButton": "إنشاء منشور",
     "creating": "جارٍ الإنشاء...",
-    "successMessage": "تم إنشاء المنشور بنجاح!",
-    "failureMessage": "فشل في إنشاء المنشور."
+    "createSuccess": "تم إنشاء المنشور بنجاح!",
+    "createError": "فشل في إنشاء المنشور.",
+    "postsList": "جميع المنشورات",
+    "loadingPosts": "جارٍ تحميل المنشورات",
+    "noPosts": "لا توجد منشورات حتى الآن."
   }
 }

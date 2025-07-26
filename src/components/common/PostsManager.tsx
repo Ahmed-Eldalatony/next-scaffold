@@ -1,4 +1,3 @@
-// src/components/common/PostsManager.tsx
 'use client';
 
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -10,14 +9,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRef } from 'react';
-import { toast } from 'sonner'; // Make sure you have sonner installed or use your preferred toast library
+import { toast } from 'sonner';
 
-// --- Types ---
 type Post = {
-  id: number; // Prisma ID is number, but API serializes it. We'll handle as number/string as needed.
+  id: number;
   title: string;
   content: string | null;
-  createdAt: string; // Assuming ISO string from API
+  createdAt: string;
 };
 
 type PostsResponse = {
@@ -33,15 +31,10 @@ type PostsResponse = {
   };
 };
 
-// --- API Functions ---
-// Fetch paginated posts
 async function fetchPosts({ pageParam = 1 }): Promise<PostsResponse> {
   // Use NEXT_PUBLIC_BASE_URL if needed, but relative path often works for same-origin API calls
-  const res = await fetch(`/api/get-posts?page=${pageParam}&limit=5`, {
-    cache: 'no-store', // Important for dynamic data
-  });
+  const res = await fetch(`/api/get-posts?page=${pageParam}&limit=5`);
   if (!res.ok) {
-    // Handle specific error codes if needed
     if (res.status === 400) {
       const errorData = await res.json();
       throw new Error(errorData.error || 'Bad Request');
@@ -51,13 +44,11 @@ async function fetchPosts({ pageParam = 1 }): Promise<PostsResponse> {
   return res.json();
 }
 
-// --- Main Component ---
 export default function PostsManager() {
   const t = useTranslations('PostsPage');
   const queryClient = useQueryClient();
   const formRef = useRef<HTMLFormElement>(null);
 
-  // --- Infinite Query for Posts ---
   const {
     data,
     fetchNextPage,
@@ -69,50 +60,33 @@ export default function PostsManager() {
     queryKey: ['posts'],
     queryFn: fetchPosts,
     getNextPageParam: (lastPage) => {
-      // Return the next page number if it exists, otherwise undefined
       return lastPage.pagination.hasNextPage ? lastPage.pagination.nextPage : undefined;
     },
-    initialPageParam: 1, // Initial page parameter for TanStack Query v5
+    initialPageParam: 1,
   });
-
-  // Flatten the pages data for easier rendering
   const posts = data?.pages.flatMap(page => page.posts) ?? [];
   const isPending = status === 'pending';
   const isError = status === 'error';
 
-  // --- Mutation for Creating a Post ---
   const { mutate: createPostMutate, isPending: isCreatingPost } = useMutation({
     mutationFn: (formData: FormData) => createPost(formData),
     onMutate: async (newPostFormData: FormData) => {
-      // Cancel any outgoing refetches for the posts query
       await queryClient.cancelQueries({ queryKey: ['posts'] });
-
-      // Snapshot the previous value (could be undefined if no data)
-      // The type returned by getQueryData for an infinite query is more complex,
-      // but for optimistic updates on the first page, we can work with the flattened structure conceptually
-      // or directly manipulate the cached pages structure.
-      // Let's get the current cached data structure for 'posts'
       const previousData = queryClient.getQueryData<ReturnType<typeof useInfiniteQuery>['data']>(['posts']);
 
-      // Create a temporary post object for optimistic UI
       const tempPost: Post = {
-        id: Date.now(), // Temporary ID (simple approach, could use uuid for better uniqueness)
+        id: Date.now(),
         title: newPostFormData.get('title') as string,
         content: newPostFormData.get('content') as string,
         createdAt: new Date().toISOString(),
       };
 
-      // Optimistically update the cache
-      // We need to update the structure that useInfiniteQuery expects: { pages: [...], pageParams: [...] }
       if (previousData && previousData.pages.length > 0) {
-        // If data exists, update the first page
         const updatedFirstPage = {
           ...previousData.pages[0],
           posts: [tempPost, ...previousData.pages[0].posts],
-          // Note: We don't update pagination counts here as it's an optimistic add
         };
 
-        // Create the new data structure
         const optimisticData = {
           pages: [updatedFirstPage, ...previousData.pages.slice(1)],
           pageParams: previousData.pageParams, // Keep page params consistent
@@ -120,14 +94,12 @@ export default function PostsManager() {
 
         queryClient.setQueryData(['posts'], optimisticData);
       } else {
-        // If no data exists in cache, create a temporary structure for the first page
-        // This handles the case where the list is empty and we add the first item
         const initialOptimisticPage: PostsResponse = {
           posts: [tempPost],
           pagination: {
             currentPage: 1,
             totalPages: 1,
-            totalCount: 1, // Temporary count
+            totalCount: 1,
             hasNextPage: false,
             hasPreviousPage: false,
             nextPage: null,
@@ -137,26 +109,18 @@ export default function PostsManager() {
 
         const optimisticData = {
           pages: [initialOptimisticPage],
-          pageParams: [1], // Initial page param
+          pageParams: [1],
         };
 
         queryClient.setQueryData(['posts'], optimisticData);
       }
-
-      // Return context with the snapshotted value for potential rollback
-      // Return the entire previous data structure
       return { previousData };
     },
     onError: (err, newPost, context) => {
-      // Rollback on error using the snapshot from onMutate
       if (context?.previousData) {
         queryClient.setQueryData(['posts'], context.previousData);
       } else {
-        // If there was no previous data, remove the 'posts' query data entirely or reset it
-        // This is less common but handles edge cases
         queryClient.removeQueries({ queryKey: ['posts'] });
-        // Or, set it back to undefined explicitly:
-        // queryClient.setQueryData(['posts'], undefined);
       }
       console.error("Failed to create post:", err);
       toast.error(t('createError'));
@@ -170,9 +134,6 @@ export default function PostsManager() {
       }
     },
     onSettled: () => {
-      // Always refetch after error or success to sync with server
-      // This will replace the optimistic post with the actual one from the database
-      // and correctly update pagination.
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
@@ -183,11 +144,9 @@ export default function PostsManager() {
     createPostMutate(formData);
   };
 
-  // --- Render Loading Skeletons ---
   if (isPending) {
     return (
       <div className="max-w-4xl mx-auto p-4 space-y-8">
-        {/* Create Post Form Skeleton */}
         <Card>
           <CardHeader>
             <Skeleton className="h-8 w-1/3" />
@@ -199,7 +158,6 @@ export default function PostsManager() {
           </CardContent>
         </Card>
 
-        {/* Posts List Skeleton */}
         <div className="space-y-6">
           <Skeleton className="h-10 w-1/4" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -220,7 +178,6 @@ export default function PostsManager() {
     );
   }
 
-  // --- Render Error ---
   if (isError) {
     return (
       <div className="max-w-4xl mx-auto p-4">
@@ -233,7 +190,6 @@ export default function PostsManager() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-8">
-      {/* --- Create Post Form --- */}
       <Card>
         <CardHeader>
           <CardTitle>{t('createTitle')}</CardTitle>
@@ -249,9 +205,8 @@ export default function PostsManager() {
         </CardContent>
       </Card>
 
-      {/* --- Paginated Posts List --- */}
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold border-b pb-2">{t('postsTitle')}</h2>
+        <h2 className="text-2xl font-bold border-b pb-2">{t('title')}</h2>
 
         {posts.length === 0 ? (
           <p className="text-muted-foreground text-center py-4">{t('noPosts')}</p>

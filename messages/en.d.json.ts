@@ -11,33 +11,36 @@ declare const messages: {
     "secret": "Secret page for logged in users"
   },
   "LocaleLayout": {
-    "title": "next-intl with Auth.js example",
+    "title": "Next Scaffold",
     "home": "Home",
     "posts": "Posts",
-    "createPost": "Create Post"
+    "logout": "Logout",
+    "login": "Login"
+
   },
   "Login": {
     "title": "Login",
     "username": "Username",
     "password": "Password",
     "submit": "Login",
-    "error": "{error, select, CredentialsSignin {Invalid username or password} other {Unknown error}}"
+    "error": "{error, select, CredentialsSignin {Invalid username or password} other {Unknown error}}",
+    "signInWithGoogle": "Sign in with Google"
   },
   "LocaleSwitcher": {
     "switchLocale": "Switch to {locale, select, ar {Arabic} en {English} other {Unknown}}"
   },
-  "Secret": {
-    "title": "Secret page",
-    "description": "This page is only visible for logged in users."
-  },
 
   "PostsPage":{
-    "title":"Posts",
-    "noPosts":"no posts",
-
+    "title":"All Posts",
+  "noPosts": "No posts yet.",
+    "loadError": "Failed to load posts",
+    "loadMore":"Load more",
+  "goToPage": "Go to page {page}",
+  "previous": "Previous",
+  "next": "Next",
+  "pageInfo": "Page {current} of {total}",
   "titlePlaceholder": "Enter post title",
 "createTitle": "Create a New Post",
-    "postsTitle": "All Posts",
   "contentPlaceholder": "Write your content here...",
   "createButton": "Create Post",
   "creating": "Creating...",
